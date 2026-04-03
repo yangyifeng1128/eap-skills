@@ -45,13 +45,13 @@ When using an existing presentation as a template:
 
 ## Scripts
 
-| Script | Purpose |
-|--------|---------|
-| `unpack.py` | Extract and pretty-print PPTX |
+| Script         | Purpose                               |
+| -------------- | ------------------------------------- |
+| `unpack.py`    | Extract and pretty-print PPTX         |
 | `add_slide.py` | Duplicate slide or create from layout |
-| `clean.py` | Remove orphaned files |
-| `pack.py` | Repack with validation |
-| `thumbnail.py` | Create visual grid of slides |
+| `clean.py`     | Remove orphaned files                 |
+| `pack.py`      | Repack with validation                |
+| `thumbnail.py` | Create visual grid of slides          |
 
 ### unpack.py
 
@@ -192,12 +192,12 @@ Handled automatically by unpack/pack. But the Edit tool converts smart quotes to
 <a:t>the &#x201C;Agreement&#x201D;</a:t>
 ```
 
-| Character | Name | Unicode | XML Entity |
-|-----------|------|---------|------------|
-| `“` | Left double quote | U+201C | `&#x201C;` |
-| `”` | Right double quote | U+201D | `&#x201D;` |
-| `‘` | Left single quote | U+2018 | `&#x2018;` |
-| `’` | Right single quote | U+2019 | `&#x2019;` |
+| Character | Name               | Unicode | XML Entity |
+| --------- | ------------------ | ------- | ---------- |
+| `“`       | Left double quote  | U+201C  | `&#x201C;` |
+| `”`       | Right double quote | U+201D  | `&#x201D;` |
+| `‘`       | Left single quote  | U+2018  | `&#x2018;` |
+| `’`       | Right single quote | U+2019  | `&#x2019;` |
 
 ### Other
 
