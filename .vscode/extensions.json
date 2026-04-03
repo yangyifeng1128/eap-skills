@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "vscode-icons-team.vscode-icons",
+    "yzhang.markdown-all-in-one",
+    "editorconfig.editorconfig",
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "tamasfe.even-better-toml"
+  ]
+}

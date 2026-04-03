@@ -1,0 +1,47 @@
+# Git 忽略文件
+# 参考资料：
+# > https://docs.github.com/en/get-started/git-basics/ignoring-files
+# > https://github.com/github/gitignore/blob/main/Node.gitignore
+
+# ==================== 操作系统 ====================
+
+.DS_Store
+
+# ==================== 编辑器 ====================
+
+.agents/
+.cursor/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# ==================== 依赖包 ====================
+
+node_modules/
+
+.venv/
+
+# ==================== 日志文件 ====================
+
+logs/
+*.log
+npm-debug.log*
+.pnpm-debug.log*
+
+# ==================== 环境变量配置文件 ====================
+
+**/.env
+
+# ==================== 构建产物 ====================
+
+# -------------------- TypeScript --------------------
+
+*.tsbuildinfo
+
+# -------------------- 其他 --------------------
+
+build/
+dist/
+out/
+output/
+target/

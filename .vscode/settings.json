@@ -1,0 +1,22 @@
+{
+  "explorer.confirmDelete": false,
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "editor.formatOnSave": true,
+  "editor.wordWrap": "off",
+  "editor.wordWrapColumn": 120,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.openRepositoryInParentFolders": "always",
+  "workbench.iconTheme": "vscode-icons",
+}

@@ -1,0 +1,7 @@
+# pptx/scripts — unpack, pack, validate, clean, add_slide, thumbnail, office validators/helpers
+defusedxml>=0.7.1
+lxml>=5.0.0
+Pillow>=10.0.0
+
+# pptx/SKILL.md — `python -m markitdown ...` text extraction from .pptx
+markitdown[pptx]>=0.1.0
