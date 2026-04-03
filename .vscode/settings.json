@@ -12,6 +12,10 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "yzhang.markdown-all-in-one"
   },
+  "[toml]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
   "editor.formatOnSave": true,
   "editor.wordWrap": "off",
   "editor.wordWrapColumn": 120,
