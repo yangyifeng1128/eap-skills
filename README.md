@@ -24,7 +24,27 @@ uv pip install -r requirements.txt
 
 如果不希望激活虚拟环境，可以在项目根目录下使用 `uv run` 引入已安装的依赖包（见下文「测试指南」）。
 
-#### 1.1.3 安装 Office 开发工具
+#### 1.1.3 一键清理虚拟环境与构建产物
+
+使用 **[pypurge](https://pypi.org/project/pypurge/)**（经 **`uvx`** 临时安装，不写入本仓库依赖）在仓库**根目录**一条命令完成清理；**`--clean-venv`** 会包含 **`.venv`** / **`venv`** 等虚拟环境目录，**`-y`** 为非交互确认。
+
+```bash
+uvx pypurge --yes --clean-venv .
+```
+
+建议首次或不确定时先预览（不落盘删除）：
+
+```bash
+uvx pypurge --preview --clean-venv .
+```
+
+若已安装 **make**，也可执行 **`make clean`**（与上面 `uvx` 命令等价）。
+
+pypurge 默认会参考 **`.gitignore`**（可用 **`--no-gitignore`** 关闭该行为）。还会处理 **`__pycache__`**、**`.pytest_cache`**、**`.mypy_cache`**、**`.ruff_cache`**、**`build/`** / **`dist/`**、**`*.egg-info`** 等常见产物；具体以 **`uvx pypurge --help`** 为准。不会改动 **`.git`** 目录本身。清理后若要继续开发，请重新执行上文「创建虚拟环境、安装依赖包」。
+
+若还要清空 **uv 全局下载缓存**（与上述仓库目录无关），可另执行：`uv cache clean`。
+
+#### 1.1.4 安装 Office 开发工具
 
 macOS 用户执行以下命令：
 
