@@ -10,101 +10,64 @@
 
 详见官方文档：[Installation](https://docs.astral.sh/uv/getting-started/installation/)
 
-#### 1.1.2 创建虚拟环境、安装依赖包
+#### 1.1.2 创建虚拟环境
+
+macOS 用户：
 
 ```bash
 cd /path/to/eap-skills
 
 uv python install
 uv venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate
 
-uv pip install -r requirements.txt
+uv sync
+```
+
+Windows 用户：
+
+```powershell
+cd \path\to\eap-skills
+
+uv python install
+uv venv
+.venv\Scripts\activate
+
+uv sync
 ```
 
 如果不希望激活虚拟环境，可以在项目根目录下使用 `uv run` 引入已安装的依赖包（见下文「测试指南」）。
 
-#### 1.1.3 一键清理虚拟环境与构建产物
-
-使用 **[pypurge](https://pypi.org/project/pypurge/)**（经 **`uvx`** 临时安装，不写入本仓库依赖）在仓库**根目录**一条命令完成清理；**`--clean-venv`** 会包含 **`.venv`** / **`venv`** 等虚拟环境目录，**`-y`** 为非交互确认。
+#### 1.1.3 清理虚拟环境
 
 ```bash
-uvx pypurge --yes --clean-venv .
+make clean
 ```
-
-建议首次或不确定时先预览（不落盘删除）：
-
-```bash
-uvx pypurge --preview --clean-venv .
-```
-
-若已安装 **make**，也可执行 **`make clean`**（与上面 `uvx` 命令等价）。
-
-pypurge 默认会参考 **`.gitignore`**（可用 **`--no-gitignore`** 关闭该行为）。还会处理 **`__pycache__`**、**`.pytest_cache`**、**`.mypy_cache`**、**`.ruff_cache`**、**`build/`** / **`dist/`**、**`*.egg-info`** 等常见产物；具体以 **`uvx pypurge --help`** 为准。不会改动 **`.git`** 目录本身。清理后若要继续开发，请重新执行上文「创建虚拟环境、安装依赖包」。
-
-若还要清空 **uv 全局下载缓存**（与上述仓库目录无关），可另执行：`uv cache clean`。
 
 #### 1.1.4 安装 Office 开发工具
 
-macOS 用户执行以下命令：
+macOS 用户：
 
 ```bash
 brew install --cask libreoffice
 brew install poppler
 ```
 
-Windows 用户执行以下命令：
+Windows 用户：
 
 ```powershell
 winget install -e --id TheDocumentFoundation.LibreOffice
 winget install -e --id oschwartz10612.Poppler
 ```
 
-执行以下命令，确认是否安装成功：
+确认是否安装成功：
 
 ```bash
 soffice --version
 pdftoppm -v
 ```
 
-### 1.2 快速开始
-
-- **PPTX / DOCX Skill 与 Python 脚本**  
-  - PPTX：[`pptx/SKILL.md`](pptx/SKILL.md)、[`pptx/editing.md`](pptx/editing.md)；命令默认在 **`pptx/`** 下执行（如 `python scripts/thumbnail.py …`）。  
-  - DOCX：[`docx/SKILL.md`](docx/SKILL.md)；命令默认在 **`docx/`** 下执行（如 `python scripts/office/unpack.py …`）。
-
----
-
-### 测试
-
-**Python（建议作为合并前冒烟）**
-
-在仓库根目录、已安装依赖的前提下：
-
-```bash
-uv run python -c "import defusedxml, lxml; from PIL import Image; print('ok')"
-uv run python -m markitdown --help
-```
-
-针对某一演示文稿（以下以 `pptx/sample.pptx` 为例，请换成你的文件路径），在**仓库根目录**跑通一条最小链路：
-
-```bash
-cd /path/to/eap-skills
-
-uv run python -m markitdown pptx/sample.pptx
-uv run python pptx/scripts/thumbnail.py pptx/sample.pptx
-```
-
-（若已 `activate` 项目 `.venv`，可将 `uv run python` 换成 `python`。文档里写在 `pptx/` 下执行的 `python scripts/...` 命令，等价于在根目录使用上面的路径形式。）
-
-解包 / 打包 / 校验类脚本见 `pptx/editing.md` 与 `pptx/SKILL.md` 中的 **QA** 小节。
-
-### 发布
-
-- **CLI**：执行 `pnpm build` 后，将 `dist/` 与 `package.json` 按你的分发方式发布（例如私有 npm 注册表或内网制品库）。  
-- **Skill**：通常将对应目录（如 `pptx/`）或其中的 `SKILL.md` 按目标平台要求拷贝或注册到 Agent 的 Skill / 规则目录；无需单独「编译」，以各 Agent 文档为准。
-
-## 第二部分：在 Agent 中测试 Skill 的使用效果
+## 二、测试指南
 
 目标：确认 Agent **真的按 Skill 文档行动**（读对文件、下对命令、做对校验），而不是仅凭常识瞎答。
 
@@ -141,11 +104,9 @@ uv run python pptx/scripts/thumbnail.py pptx/sample.pptx
 
 ---
 
-## 第三部分：安装并使用 pptx / docx 技能（面向用户）
+## 三、使用指南
 
-公开仓库：**[https://github.com/yangyifeng1128/eap-skills](https://github.com/yangyifeng1128/eap-skills)**。技能由目录内 [`pptx/SKILL.md`](pptx/SKILL.md)、[`docx/SKILL.md`](docx/SKILL.md) 定义（frontmatter 中 `name` 分别为 **`pptx`**、**`docx`**）。
-
-### 1. 用 `skills` CLI 安装（[skills.sh](https://skills.sh/) 生态）
+### 3.1 用 `skills` CLI 安装（[skills.sh](https://skills.sh/) 生态）
 
 CLI 开源仓库：[vercel-labs/skills](https://github.com/vercel-labs/skills)。安装前可先查看本仓库包含哪些技能：
 
@@ -175,61 +136,7 @@ npx skills add yangyifeng1128/eap-skills --skill docx
 
 > **说明：** CLI 会把 Skill **说明与流程** 安装到 Agent 的 skills 目录；**运行文档中的 Python 脚本**仍需要你在本机 **克隆仓库** 并完成上文 **第一部分** 中的 Python 依赖（`requirements.txt`）及可选系统工具（LibreOffice、Poppler、pandoc 等）。
 
-### 2. 克隆仓库（运行脚本必做）
-
-```bash
-git clone https://github.com/yangyifeng1128/eap-skills.git
-cd eap-skills
-```
-
-在仓库根目录按第一部分配置 `uv` 与 `uv pip install -r requirements.txt`。Skill 文档里的相对路径以 **`pptx/`** 或 **`docx/`** 为当前工作目录；从仓库根目录调用时，请使用下文「命令示例」中的路径形式。
-
-### 3. 额外依赖速查
-
-| 技能     | 典型用途                       | 除 `requirements.txt` 外常见依赖                                                                                                                                     |
-| -------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **pptx** | 读幻灯片、缩略图、模板编辑流程 | `markitdown[pptx]`（已在 requirements）、LibreOffice、`pdftoppm`（Poppler）；从零生成见 [`pptx/pptxgenjs.md`](pptx/pptxgenjs.md)（Node + `pptxgenjs`）               |
-| **docx** | 读 Word、解包编辑、校验        | **pandoc**（如 `pandoc --track-changes`）；接受修订 / 转 PDF 等需 **LibreOffice**；用 JS 新建文档需 **`npm install -g docx`**（见 [`docx/SKILL.md`](docx/SKILL.md)） |
-
-### 4. 命令示例（本机终端）
-
-以下假设当前目录为克隆后的 **`eap-skills` 仓库根目录**，且已 `uv venv` 并安装依赖（或使用 `uv run`）。
-
-**pptx — 提取文字、缩略图网格**
-
-```bash
-uv run python -m markitdown pptx/你的文件.pptx
-uv run python pptx/scripts/thumbnail.py pptx/你的文件.pptx
-```
-
-若在 **`pptx/`** 目录内执行（与 SKILL 原文一致）：
-
-```bash
-cd pptx
-uv run --directory .. python -m markitdown 你的文件.pptx
-uv run --directory .. python scripts/thumbnail.py 你的文件.pptx
-```
-
-**docx — 转 Markdown（保留修订）、解包、校验**
-
-```bash
-pandoc --track-changes=all docx/你的文件.docx -o /tmp/out.md
-uv run python docx/scripts/office/unpack.py docx/你的文件.docx docx/unpacked/
-uv run python docx/scripts/office/validate.py docx/你的文件.docx
-```
-
-若在 **`docx/`** 目录内：
-
-```bash
-cd docx
-pandoc --track-changes=all 你的文件.docx -o /tmp/out.md
-uv run --directory .. python scripts/office/unpack.py 你的文件.docx unpacked/
-uv run --directory .. python scripts/office/validate.py 你的文件.docx
-```
-
-更多流程（模板编辑、打包回写、QA）见各自 **SKILL.md** 与 **editing** 类文档。
-
-### 5. 在 Agent 里的自然语言示例
+### 3.2 示例
 
 安装技能后，可直接用任务描述触发（Agent 应按对应 `SKILL.md` 操作）：
 
