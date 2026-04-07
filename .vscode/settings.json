@@ -17,4 +17,5 @@
   "git.enableSmartCommit": true,
   "git.openRepositoryInParentFolders": "always",
   "workbench.iconTheme": "vscode-icons",
+  "json.format.enable": false
 }
