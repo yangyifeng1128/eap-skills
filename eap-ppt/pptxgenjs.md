@@ -1,5 +1,7 @@
 # PptxGenJS 教程
 
+> **eap-ppt 技能：** 从零生成演示时以 [SKILL.md](SKILL.md) 为品牌与版式单一来源；本文负责 API 与代码细节。画布请使用 **`LAYOUT_WIDE`（13.3" × 7.5"）**，与 SKILL 中 13.33"×7.5" 一致。颜色、字体、固定元素坐标须与 SKILL 一致。
+
 ## 环境与基本结构
 
 ```javascript
