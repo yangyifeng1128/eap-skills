@@ -17,11 +17,6 @@ description: "当用户需要生成幻灯片/演讲稿/PPT时，必须使用此�
 | bg (lt1) | `FBFBFB` | 内容页近白底 |
 | text (dk2) | `333333` | 正文 |
 | secondary (lt2) | `F7A32A` | 金橙次要强调 |
-| accent1 / accent2 | 同 primary / secondary | |
-| accent3 | `73A05E` | 图表/图标绿 |
-| accent4 | `394E92` | 图表/图标蓝 |
-| accent5 | `FFFFFF` | 白 |
-| accent6 | `D8D8D8` | 浅灰、页码等 |
 | hyperlink | `FF0000` | 链接 |
 | followed hyperlink | `3EBBF0` | 已访问链接 |
 
