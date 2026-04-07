@@ -1,12 +1,12 @@
-# PptxGenJS Tutorial
+# PptxGenJS 教程
 
-## Setup & Basic Structure
+## 环境与基本结构
 
 ```javascript
 const pptxgen = require("pptxgenjs");
 
 let pres = new pptxgen();
-pres.layout = 'LAYOUT_16x9';  // or 'LAYOUT_16x10', 'LAYOUT_4x3', 'LAYOUT_WIDE'
+pres.layout = 'LAYOUT_16x9';  // 或 'LAYOUT_16x10'、'LAYOUT_4x3'、'LAYOUT_WIDE'
 pres.author = 'Your Name';
 pres.title = 'Presentation Title';
 
@@ -16,73 +16,73 @@ slide.addText("Hello World!", { x: 0.5, y: 0.5, fontSize: 36, color: "363636" })
 pres.writeFile({ fileName: "Presentation.pptx" });
 ```
 
-## Layout Dimensions
+## 版式尺寸
 
-Slide dimensions (coordinates in inches):
-- `LAYOUT_16x9`: 10" × 5.625" (default)
-- `LAYOUT_16x10`: 10" × 6.25"
-- `LAYOUT_4x3`: 10" × 7.5"
-- `LAYOUT_WIDE`: 13.3" × 7.5"
+幻灯片尺寸（坐标单位为英寸）：
+- `LAYOUT_16x9`：10" × 5.625"（默认）
+- `LAYOUT_16x10`：10" × 6.25"
+- `LAYOUT_4x3`：10" × 7.5"
+- `LAYOUT_WIDE`：13.3" × 7.5"
 
 ---
 
-## Text & Formatting
+## 文字与格式
 
 ```javascript
-// Basic text
+// 基础文字
 slide.addText("Simple Text", {
   x: 1, y: 1, w: 8, h: 2, fontSize: 24, fontFace: "Arial",
   color: "363636", bold: true, align: "center", valign: "middle"
 });
 
-// Character spacing (use charSpacing, not letterSpacing which is silently ignored)
+// 字符间距（用 charSpacing；letterSpacing 会被静默忽略）
 slide.addText("SPACED TEXT", { x: 1, y: 1, w: 8, h: 1, charSpacing: 6 });
 
-// Rich text arrays
+// 富文本数组
 slide.addText([
   { text: "Bold ", options: { bold: true } },
   { text: "Italic ", options: { italic: true } }
 ], { x: 1, y: 3, w: 8, h: 1 });
 
-// Multi-line text (requires breakLine: true)
+// 多行（条目间需要 breakLine: true）
 slide.addText([
   { text: "Line 1", options: { breakLine: true } },
   { text: "Line 2", options: { breakLine: true } },
-  { text: "Line 3" }  // Last item doesn't need breakLine
+  { text: "Line 3" }  // 最后一项可不加 breakLine
 ], { x: 0.5, y: 0.5, w: 8, h: 2 });
 
-// Text box margin (internal padding)
+// 文本框边距（内边距）
 slide.addText("Title", {
   x: 0.5, y: 0.3, w: 9, h: 0.6,
-  margin: 0  // Use 0 when aligning text with other elements like shapes or icons
+  margin: 0  // 与形状、图标等对齐到同一 x 时设为 0
 });
 ```
 
-**Tip:** Text boxes have internal margin by default. Set `margin: 0` when you need text to align precisely with shapes, lines, or icons at the same x-position.
+**提示：** 文本框默认有内边距。需要与同 x 位置的形状、线条或图标精确对齐时，设 `margin: 0`。
 
 ---
 
-## Lists & Bullets
+## 列表与项目符号
 
 ```javascript
-// ✅ CORRECT: Multiple bullets
+// ✅ 正确：多条列表
 slide.addText([
   { text: "First item", options: { bullet: true, breakLine: true } },
   { text: "Second item", options: { bullet: true, breakLine: true } },
   { text: "Third item", options: { bullet: true } }
 ], { x: 0.5, y: 0.5, w: 8, h: 3 });
 
-// ❌ WRONG: Never use unicode bullets
-slide.addText("• First item", { ... });  // Creates double bullets
+// ❌ 错误：不要用 Unicode 项目符号
+slide.addText("• First item", { ... });  // 会出现双重符号
 
-// Sub-items and numbered lists
+// 子项与编号列表
 { text: "Sub-item", options: { bullet: true, indentLevel: 1 } }
 { text: "First", options: { bullet: { type: "number" }, breakLine: true } }
 ```
 
 ---
 
-## Shapes
+## 形状
 
 ```javascript
 slide.addShape(pres.shapes.RECTANGLE, {
@@ -96,20 +96,20 @@ slide.addShape(pres.shapes.LINE, {
   x: 1, y: 3, w: 5, h: 0, line: { color: "FF0000", width: 3, dashType: "dash" }
 });
 
-// With transparency
+// 透明度
 slide.addShape(pres.shapes.RECTANGLE, {
   x: 1, y: 1, w: 3, h: 2,
   fill: { color: "0088CC", transparency: 50 }
 });
 
-// Rounded rectangle (rectRadius only works with ROUNDED_RECTANGLE, not RECTANGLE)
-// ⚠️ Don't pair with rectangular accent overlays — they won't cover rounded corners. Use RECTANGLE instead.
+// 圆角矩形（rectRadius 仅对 ROUNDED_RECTANGLE 有效，对 RECTANGLE 无效）
+// ⚠️ 不要与矩形装饰条叠用——盖不住圆角。装饰条场景请用 RECTANGLE。
 slide.addShape(pres.shapes.ROUNDED_RECTANGLE, {
   x: 1, y: 1, w: 3, h: 2,
   fill: { color: "FFFFFF" }, rectRadius: 0.1
 });
 
-// With shadow
+// 阴影
 slide.addShape(pres.shapes.RECTANGLE, {
   x: 1, y: 1, w: 3, h: 2,
   fill: { color: "FFFFFF" },
@@ -117,68 +117,68 @@ slide.addShape(pres.shapes.RECTANGLE, {
 });
 ```
 
-Shadow options:
+阴影选项：
 
-| Property  | Type   | Range                        | Notes                                                         |
-| --------- | ------ | ---------------------------- | ------------------------------------------------------------- |
-| `type`    | string | `"outer"`, `"inner"`         |                                                               |
-| `color`   | string | 6-char hex (e.g. `"000000"`) | No `#` prefix, no 8-char hex — see Common Pitfalls            |
-| `blur`    | number | 0-100 pt                     |                                                               |
-| `offset`  | number | 0-200 pt                     | **Must be non-negative** — negative values corrupt the file   |
-| `angle`   | number | 0-359 degrees                | Direction the shadow falls (135 = bottom-right, 270 = upward) |
-| `opacity` | number | 0.0-1.0                      | Use this for transparency, never encode in color string       |
+| 属性      | 类型   | 范围                         | 说明 |
+| --------- | ------ | ---------------------------- | ---- |
+| `type`    | string | `"outer"`、`"inner"`         |      |
+| `color`   | string | 6 位十六进制，如 `"000000"`  | 不要 `#` 前缀，不要 8 位色——见「常见陷阱」 |
+| `blur`    | number | 0–100 pt                     |      |
+| `offset`  | number | 0–200 pt                     | **必须非负**——负值会损坏文件 |
+| `angle`   | number | 0–359 度                     | 阴影方向（135 = 右下，270 = 向上） |
+| `opacity` | number | 0.0–1.0                      | 透明度用此项，不要写进颜色字符串 |
 
-To cast a shadow upward (e.g. on a footer bar), use `angle: 270` with a positive offset — do **not** use a negative offset.
+要让阴影向上（例如页脚条），用 `angle: 270` 且 `offset` 为正——**不要用负 offset**。
 
-**Note**: Gradient fills are not natively supported. Use a gradient image as a background instead.
+**说明：** 原生不支持渐变填充。请改用渐变图片作背景。
 
 ---
 
-## Images
+## 图片
 
-### Image Sources
+### 图片来源
 
 ```javascript
-// From file path
+// 本地路径
 slide.addImage({ path: "images/chart.png", x: 1, y: 1, w: 5, h: 3 });
 
-// From URL
+// URL
 slide.addImage({ path: "https://example.com/image.jpg", x: 1, y: 1, w: 5, h: 3 });
 
-// From base64 (faster, no file I/O)
+// base64（更快，无磁盘 I/O）
 slide.addImage({ data: "image/png;base64,iVBORw0KGgo...", x: 1, y: 1, w: 5, h: 3 });
 ```
 
-### Image Options
+### 图片选项
 
 ```javascript
 slide.addImage({
   path: "image.png",
   x: 1, y: 1, w: 5, h: 3,
-  rotate: 45,              // 0-359 degrees
-  rounding: true,          // Circular crop
-  transparency: 50,        // 0-100
-  flipH: true,             // Horizontal flip
-  flipV: false,            // Vertical flip
-  altText: "Description",  // Accessibility
+  rotate: 45,              // 0–359 度
+  rounding: true,          // 圆形裁切
+  transparency: 50,        // 0–100
+  flipH: true,             // 水平翻转
+  flipV: false,            // 垂直翻转
+  altText: "Description",  // 无障碍说明
   hyperlink: { url: "https://example.com" }
 });
 ```
 
-### Image Sizing Modes
+### 图片缩放模式
 
 ```javascript
-// Contain - fit inside, preserve ratio
+// 包含：放入区域内，保持比例
 { sizing: { type: 'contain', w: 4, h: 3 } }
 
-// Cover - fill area, preserve ratio (may crop)
+// 覆盖：填满区域，保持比例（可能裁切）
 { sizing: { type: 'cover', w: 4, h: 3 } }
 
-// Crop - cut specific portion
+// 裁切：指定区域
 { sizing: { type: 'crop', x: 0.5, y: 0.5, w: 2, h: 2 } }
 ```
 
-### Calculate Dimensions (preserve aspect ratio)
+### 按宽高比计算尺寸
 
 ```javascript
 const origWidth = 1978, origHeight = 923, maxHeight = 3.0;
@@ -188,18 +188,18 @@ const centerX = (10 - calcWidth) / 2;
 slide.addImage({ path: "image.png", x: centerX, y: 1.2, w: calcWidth, h: maxHeight });
 ```
 
-### Supported Formats
+### 支持格式
 
-- **Standard**: PNG, JPG, GIF (animated GIFs work in Microsoft 365)
-- **SVG**: Works in modern PowerPoint/Microsoft 365
+- **常用**：PNG、JPG、GIF（动图在 Microsoft 365 中可用）
+- **SVG**：现代 PowerPoint / Microsoft 365 支持
 
 ---
 
-## Icons
+## 图标
 
-Use react-icons to generate SVG icons, then rasterize to PNG for universal compatibility.
+用 react-icons 生成 SVG，再栅格化为 PNG，兼容性最好。
 
-### Setup
+### 准备
 
 ```javascript
 const React = require("react");
@@ -220,50 +220,50 @@ async function iconToBase64Png(IconComponent, color, size = 256) {
 }
 ```
 
-### Add Icon to Slide
+### 加到幻灯片
 
 ```javascript
 const iconData = await iconToBase64Png(FaCheckCircle, "#4472C4", 256);
 
 slide.addImage({
   data: iconData,
-  x: 1, y: 1, w: 0.5, h: 0.5  // Size in inches
+  x: 1, y: 1, w: 0.5, h: 0.5  // 单位为英寸
 });
 ```
 
-**Note**: Use size 256 or higher for crisp icons. The size parameter controls the rasterization resolution, not the display size on the slide (which is set by `w` and `h` in inches).
+**说明：** 栅格化建议 size ≥ 256，图标更清晰。`size` 控制导出分辨率；幻灯片上的显示大小由 `w`、`h`（英寸）决定。
 
-### Icon Libraries
+### 图标库
 
-Install: `npm install -g react-icons react react-dom sharp`
+安装：`npm install -g react-icons react react-dom sharp`
 
-Popular icon sets in react-icons:
-- `react-icons/fa` - Font Awesome
-- `react-icons/md` - Material Design
-- `react-icons/hi` - Heroicons
-- `react-icons/bi` - Bootstrap Icons
+react-icons 常用包：
+- `react-icons/fa` — Font Awesome
+- `react-icons/md` — Material Design
+- `react-icons/hi` — Heroicons
+- `react-icons/bi` — Bootstrap Icons
 
 ---
 
-## Slide Backgrounds
+## 幻灯片背景
 
 ```javascript
-// Solid color
+// 纯色
 slide.background = { color: "F1F1F1" };
 
-// Color with transparency
+// 带透明度
 slide.background = { color: "FF3399", transparency: 50 };
 
-// Image from URL
+// URL 图片
 slide.background = { path: "https://example.com/bg.jpg" };
 
-// Image from base64
+// base64 图片
 slide.background = { data: "image/png;base64,iVBORw0KGgo..." };
 ```
 
 ---
 
-## Tables
+## 表格
 
 ```javascript
 slide.addTable([
@@ -274,7 +274,7 @@ slide.addTable([
   border: { pt: 1, color: "999999" }, fill: { color: "F1F1F1" }
 });
 
-// Advanced with merged cells
+// 合并单元格等高级用法
 let tableData = [
   [{ text: "Header", options: { fill: { color: "6699CC" }, color: "FFFFFF", bold: true } }, "Cell"],
   [{ text: "Merged", options: { colspan: 2 } }]
@@ -284,10 +284,10 @@ slide.addTable(tableData, { x: 1, y: 3.5, w: 8, colW: [4, 4] });
 
 ---
 
-## Charts
+## 图表
 
 ```javascript
-// Bar chart
+// 柱状图
 slide.addChart(pres.charts.BAR, [{
   name: "Sales", labels: ["Q1", "Q2", "Q3", "Q4"], values: [4500, 5500, 6200, 7100]
 }], {
@@ -295,59 +295,59 @@ slide.addChart(pres.charts.BAR, [{
   showTitle: true, title: 'Quarterly Sales'
 });
 
-// Line chart
+// 折线图
 slide.addChart(pres.charts.LINE, [{
   name: "Temp", labels: ["Jan", "Feb", "Mar"], values: [32, 35, 42]
 }], { x: 0.5, y: 4, w: 6, h: 3, lineSize: 3, lineSmooth: true });
 
-// Pie chart
+// 饼图
 slide.addChart(pres.charts.PIE, [{
   name: "Share", labels: ["A", "B", "Other"], values: [35, 45, 20]
 }], { x: 7, y: 1, w: 5, h: 4, showPercent: true });
 ```
 
-### Better-Looking Charts
+### 更美观的图表
 
-Default charts look dated. Apply these options for a modern, clean appearance:
+默认样式偏旧。可叠加以下选项，得到更现代、干净的外观：
 
 ```javascript
 slide.addChart(pres.charts.BAR, chartData, {
   x: 0.5, y: 1, w: 9, h: 4, barDir: "col",
 
-  // Custom colors (match your presentation palette)
+  // 自定义颜色（与整稿配色一致）
   chartColors: ["0D9488", "14B8A6", "5EEAD4"],
 
-  // Clean background
+  // 干净背景
   chartArea: { fill: { color: "FFFFFF" }, roundedCorners: true },
 
-  // Muted axis labels
+  // 柔和坐标轴标签色
   catAxisLabelColor: "64748B",
   valAxisLabelColor: "64748B",
 
-  // Subtle grid (value axis only)
+  // 淡网格（仅数值轴）
   valGridLine: { color: "E2E8F0", size: 0.5 },
   catGridLine: { style: "none" },
 
-  // Data labels on bars
+  // 柱上数据标签
   showValue: true,
   dataLabelPosition: "outEnd",
   dataLabelColor: "1E293B",
 
-  // Hide legend for single series
+  // 单系列时可隐藏图例
   showLegend: false,
 });
 ```
 
-**Key styling options:**
-- `chartColors: [...]` - hex colors for series/segments
-- `chartArea: { fill, border, roundedCorners }` - chart background
-- `catGridLine/valGridLine: { color, style, size }` - grid lines (`style: "none"` to hide)
-- `lineSmooth: true` - curved lines (line charts)
-- `legendPos: "r"` - legend position: "b", "t", "l", "r", "tr"
+**常用样式项：**
+- `chartColors: [...]` — 系列/扇区用的十六进制色
+- `chartArea: { fill, border, roundedCorners }` — 图表区域背景
+- `catGridLine` / `valGridLine: { color, style, size }` — 网格线（`style: "none"` 隐藏）
+- `lineSmooth: true` — 折线平滑
+- `legendPos: "r"` — 图例位置：`"b"`、`"t"`、`"l"`、`"r"`、`"tr"`
 
 ---
 
-## Slide Masters
+## 幻灯片母版
 
 ```javascript
 pres.defineSlideMaster({
@@ -363,58 +363,58 @@ titleSlide.addText("My Title", { placeholder: "title" });
 
 ---
 
-## Common Pitfalls
+## 常见陷阱
 
-⚠️ These issues cause file corruption, visual bugs, or broken output. Avoid them.
+⚠️ 下列问题会导致文件损坏、显示异常或输出错误，务必避免。
 
-1. **NEVER use "#" with hex colors** - causes file corruption
+1. **十六进制颜色不要加 `#`** — 会损坏文件
    ```javascript
-   color: "FF0000"      // ✅ CORRECT
-   color: "#FF0000"     // ❌ WRONG
+   color: "FF0000"      // ✅ 正确
+   color: "#FF0000"     // ❌ 错误
    ```
 
-2. **NEVER encode opacity in hex color strings** - 8-char colors (e.g., `"00000020"`) corrupt the file. Use the `opacity` property instead.
+2. **不要把透明度写进 8 位颜色** — 如 `"00000020"` 会损坏文件。请用 `opacity`。
    ```javascript
-   shadow: { type: "outer", blur: 6, offset: 2, color: "00000020" }          // ❌ CORRUPTS FILE
-   shadow: { type: "outer", blur: 6, offset: 2, color: "000000", opacity: 0.12 }  // ✅ CORRECT
+   shadow: { type: "outer", blur: 6, offset: 2, color: "00000020" }          // ❌ 损坏文件
+   shadow: { type: "outer", blur: 6, offset: 2, color: "000000", opacity: 0.12 }  // ✅ 正确
    ```
 
-3. **Use `bullet: true`** - NEVER unicode symbols like "•" (creates double bullets)
+3. **列表用 `bullet: true`** — 禁止用「•」等 Unicode（会出现双重符号）
 
-4. **Use `breakLine: true`** between array items or text runs together
+4. **数组项之间用 `breakLine: true`**，否则可能连成一行
 
-5. **Avoid `lineSpacing` with bullets** - causes excessive gaps; use `paraSpaceAfter` instead
+5. **列表慎用 `lineSpacing`** — 易出现过大行距；可改用 `paraSpaceAfter`
 
-6. **Each presentation needs fresh instance** - don't reuse `pptxgen()` objects
+6. **每次新建演示都要 `new pptxgen()`** — 不要复用实例
 
-7. **NEVER reuse option objects across calls** - PptxGenJS mutates objects in-place (e.g. converting shadow values to EMU). Sharing one object between multiple calls corrupts the second shape.
+7. **不要跨调用复用同一个 options 对象** — PptxGenJS 会原地修改（如把 shadow 转成 EMU）。多处共用同一对象会让第二个形状数据错乱。
    ```javascript
    const shadow = { type: "outer", blur: 6, offset: 2, color: "000000", opacity: 0.15 };
-   slide.addShape(pres.shapes.RECTANGLE, { shadow, ... });  // ❌ second call gets already-converted values
+   slide.addShape(pres.shapes.RECTANGLE, { shadow, ... });  // ❌ 第二次已是转换后的值
    slide.addShape(pres.shapes.RECTANGLE, { shadow, ... });
 
    const makeShadow = () => ({ type: "outer", blur: 6, offset: 2, color: "000000", opacity: 0.15 });
-   slide.addShape(pres.shapes.RECTANGLE, { shadow: makeShadow(), ... });  // ✅ fresh object each time
+   slide.addShape(pres.shapes.RECTANGLE, { shadow: makeShadow(), ... });  // ✅ 每次新对象
    slide.addShape(pres.shapes.RECTANGLE, { shadow: makeShadow(), ... });
    ```
 
-8. **Don't use `ROUNDED_RECTANGLE` with accent borders** - rectangular overlay bars won't cover rounded corners. Use `RECTANGLE` instead.
+8. **装饰竖条不要配 `ROUNDED_RECTANGLE`** — 矩形条盖不住圆角。请用 `RECTANGLE`。
    ```javascript
-   // ❌ WRONG: Accent bar doesn't cover rounded corners
+   // ❌ 错误：竖条盖不住圆角
    slide.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 1, y: 1, w: 3, h: 1.5, fill: { color: "FFFFFF" } });
    slide.addShape(pres.shapes.RECTANGLE, { x: 1, y: 1, w: 0.08, h: 1.5, fill: { color: "0891B2" } });
 
-   // ✅ CORRECT: Use RECTANGLE for clean alignment
+   // ✅ 正确：用 RECTANGLE 对齐更干净
    slide.addShape(pres.shapes.RECTANGLE, { x: 1, y: 1, w: 3, h: 1.5, fill: { color: "FFFFFF" } });
    slide.addShape(pres.shapes.RECTANGLE, { x: 1, y: 1, w: 0.08, h: 1.5, fill: { color: "0891B2" } });
    ```
 
 ---
 
-## Quick Reference
+## 速查
 
-- **Shapes**: RECTANGLE, OVAL, LINE, ROUNDED_RECTANGLE
-- **Charts**: BAR, LINE, PIE, DOUGHNUT, SCATTER, BUBBLE, RADAR
-- **Layouts**: LAYOUT_16x9 (10"×5.625"), LAYOUT_16x10, LAYOUT_4x3, LAYOUT_WIDE
-- **Alignment**: "left", "center", "right"
-- **Chart data labels**: "outEnd", "inEnd", "center"
+- **形状**：RECTANGLE、OVAL、LINE、ROUNDED_RECTANGLE
+- **图表**：BAR、LINE、PIE、DOUGHNUT、SCATTER、BUBBLE、RADAR
+- **版式**：LAYOUT_16x9（10"×5.625"）、LAYOUT_16x10、LAYOUT_4x3、LAYOUT_WIDE
+- **对齐**：`"left"`、`"center"`、`"right"`
+- **图表数据标签位置**：`"outEnd"`、`"inEnd"`、`"center"`
